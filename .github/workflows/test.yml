@@ -4,19 +4,35 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   build:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
     name: Test build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: npm i
       - run: npm run build
 
   lint:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
     name: Check linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: npm i
       - run: npm run lint
