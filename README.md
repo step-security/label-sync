@@ -51,13 +51,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-This is only a sample workflow to illustrate all the options: if you want to see an actual workflow you can check out the one in this repo [here](.github/workflows/labels.yml).
+This is only a sample workflow to illustrate all the options:
 
 ### Config files
 
 If you want to use a config file you can create your own following the instructions below.
-
-If you want to start off by copying the labels from another repository, you can use my [`EndBug/export-label-config` action](https://github.com/EndBug/export-label-config), that will generate one for you.
 
 How to create a config file:
 
