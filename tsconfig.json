@@ -5,7 +5,8 @@
     "outDir": "./lib",
     "declaration": false,
     "lib": ["es2022", "esnext.disposable"],
-    "types": ["node"]
+    "types": ["node"],
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts",
