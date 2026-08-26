@@ -178,13 +178,16 @@ function throwConfigError(value: LabelInfo[]) {
 
 function readConfigFile(filePath: string) {
   startGroup('Reading config file...');
+
+  const resolvedPath = path.resolve(filePath);
+  const workspace = process.env.GITHUB_WORKSPACE;
+  if (workspace && !resolvedPath.startsWith(workspace + path.sep)) {
+    throw "Can't access config file.";
+  }
+
   let file: string;
-
   try {
-    // Read the file from the given path
     log.info('Reading file...');
-
-    const resolvedPath = path.resolve(filePath);
     core.debug(`Resolved path: ${resolvedPath}`);
 
     file = fs.readFileSync(resolvedPath, {encoding: 'utf-8'});
@@ -243,9 +246,24 @@ function parseConfigFile(
   return parsed;
 }
 
+function isInternalURL(urlStr: string): boolean {
+  try {
+    const {hostname} = new URL(urlStr);
+    const privateRanges =
+      /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|169\.254\.\d+\.\d+|::1|0\.0\.0\.0)$/;
+    return privateRanges.test(hostname);
+  } catch {
+    return true;
+  }
+}
+
 async function readRemoteConfigFile(fileURL: string): Promise<LabelInfo[]> {
   startGroup('Reading remote config file...');
   const token = getInput('request-token');
+
+  if (isInternalURL(fileURL)) {
+    throw 'Remote config file URL must not point to internal network resources.';
+  }
 
   const headers = token
     ? {
