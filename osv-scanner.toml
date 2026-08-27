@@ -1,0 +1,31 @@
+[[IgnoredVulns]]
+id = "GHSA-fjxv-7rqg-78g4"
+reason = "form-data@2.3.3 is a transitive dep of request -> octonode -> @endbug/github-label-sync (at latest version). The vulnerability concerns unsafe random boundary generation in multipart form uploads. Our code paths through octonode only issue GET requests to the GitHub API with JSON bodies; no multipart form data is ever constructed or sent."
+
+[[IgnoredVulns]]
+id = "GHSA-hmw2-7cc7-3qxx"
+reason = "form-data@2.3.3 is a transitive dep of request -> octonode -> @endbug/github-label-sync (at latest version). The CRLF injection requires attacker-controlled multipart field names or filenames. Our code never constructs multipart requests; octonode only sends GET requests with fixed GitHub API paths."
+
+[[IgnoredVulns]]
+id = "GHSA-6rw7-vpxm-498p"
+reason = "qs@6.5.5 is a transitive dep of request -> octonode -> @endbug/github-label-sync (at latest version). The DoS requires attacker-controlled input with deeply nested bracket notation arrays. The only query parameters passed through octonode are controlled integers (page, per_page); no user input reaches qs."
+
+[[IgnoredVulns]]
+id = "GHSA-p8p7-x288-28g6"
+reason = "request@2.88.2 is a transitive dep of octonode -> @endbug/github-label-sync (at latest version, no upstream fix exists). The SSRF requires attacker-controlled URLs passed to request. All URLs used by octonode are fixed GitHub API paths (/repos/{repo}/labels). User-supplied URLs (config-file) are blocked by the application-level isInternalURL guard before reaching octonode."
+
+[[IgnoredVulns]]
+id = "GHSA-52f5-9888-hmc6"
+reason = "tmp@0.0.33 is a transitive dep of external-editor -> inquirer -> gts, which is a dev-only linting tool. It is not included in the bundled dist/index.js and is never executed in the GitHub Actions runner environment. The vulnerability only affects development tooling."
+
+[[IgnoredVulns]]
+id = "GHSA-ph9p-34f9-6g65"
+reason = "tmp@0.0.33 is a transitive dep of external-editor -> inquirer -> gts, which is a dev-only linting tool. It is not included in the bundled dist/index.js and is never executed in the GitHub Actions runner environment. The vulnerability only affects development tooling."
+
+[[IgnoredVulns]]
+id = "GHSA-72xf-g2v4-qvf3"
+reason = "tough-cookie@2.5.0 is a transitive dep of request -> octonode -> @endbug/github-label-sync (at latest version). The prototype pollution requires parsing attacker-controlled Set-Cookie headers. GitHub API responses do not set cookies, and our code does not use a cookie jar or process any cookie values."
+
+[[IgnoredVulns]]
+id = "GHSA-w5hq-g745-h8pq"
+reason = "uuid@3.4.0 is a transitive dep of request -> octonode -> @endbug/github-label-sync (at latest version). The buffer bounds vulnerability requires passing a buf parameter to uuid v3/v5/v6 generation. request uses uuid only for multipart form boundaries, which our code never triggers since all octonode calls are GET requests."
